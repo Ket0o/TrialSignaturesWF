@@ -10,9 +10,11 @@ namespace Test
 {
     public partial class Form1 : Form
     {
-        private Image<Gray, byte> inputImage = null;
+        private string signatureCoordinatesPath = "";
+        private string signaturePath = "";
+        private Image<Bgr, byte> inputImage = null;
 
-        private string inputImageName = "";
+        private static string inputImageName = "";
 
         public Form1()
         {
@@ -23,7 +25,6 @@ namespace Test
         {
             textBox1.Clear();
             textBox2.Clear();
-            textBox3.Clear();
             listBox1.Items.Clear();
         }
 
@@ -37,10 +38,12 @@ namespace Test
                 if (result == DialogResult.OK)
                 {
                     inputImageName = openFileDialog1.FileName;
-                    inputImage = new Image<Gray, byte>(inputImageName);
-                    inputImageName = Regex.Match(openFileDialog1.FileName, 
+                    inputImage = new Image<Bgr, byte>(inputImageName);
+                    inputImageName = Regex.Match(openFileDialog1.FileName,
                         @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                     pictureBox1.Image = inputImage.ToBitmap();
+                    signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
+                    signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
                 }
                 else
                 {
@@ -53,13 +56,13 @@ namespace Test
             }
         }
 
-        public static VectorOfVectorOfPoint GetCountors(Image<Gray, byte> image)
+        public static VectorOfVectorOfPoint MuralsGetCountors(Image<Gray, byte> image)
         {
             VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
             var hierarchy = new UMat();
-            CvInvoke.FindContours(image, contours, hierarchy, 
+            CvInvoke.FindContours(image, contours, hierarchy,
                 Emgu.CV.CvEnum.RetrType.Tree, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-            
+
             return contours;
         }
 
@@ -68,38 +71,37 @@ namespace Test
             ClearAllBoxes();
             try
             {
-                Image<Gray, byte> outputImage = inputImage.Convert<Gray,
-                    byte>().ThresholdBinary(new Gray(100), new Gray(255));
+                Image<Gray, byte> outputImage =
+                    inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
 
-                var contours = GetCountors(outputImage);
+                SearchAndCropByRectangle(outputImage);
+
+                VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
+
                 Array points = contours.ToArrayOfArray();
 
                 var totalPoints = 0;
-                var outputString = new StreamWriter(
-                        $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt");
-                
+                var outputString = new StreamWriter(signatureCoordinatesPath);
+
                 foreach (Point[] pointCoordinate in points)
                 {
                     foreach (Point point in pointCoordinate)
                     {
-                        if (totalPoints >= 4)
-                        {
-                            listBox1.Items.Add(point);
-                            outputString.WriteLine(point.ToString());
-                        }
+                        listBox1.Items.Add(point);
+                        outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
                         totalPoints++;
                     }
                 }
-                
+
                 outputString.Close();
-                textBox1.Text = (totalPoints - 4).ToString();
+                textBox1.Text = totalPoints.ToString();
 
                 if (checkBox1.Checked)
                 {
                     Image<Gray, byte> blackBackground = new Image<Gray, byte>(inputImage.Width, inputImage.Height, new Gray(0));
 
 
-                    CvInvoke.DrawContours(blackBackground, contours, -1, new MCvScalar(255, 0, 0));
+                    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(0, 0, 255));
 
                     pictureBox2.Image = blackBackground.ToBitmap();
 
@@ -117,9 +119,59 @@ namespace Test
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        public void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
         {
-            textBox3.Text = listBox1.SelectedItem.ToString();
+            VectorOfVectorOfPoint shapesContours = new VectorOfVectorOfPoint();
+            var hierarchy = new UMat();
+            CvInvoke.FindContours(outputImage, shapesContours, hierarchy,
+                Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+
+            for (int i = 0; i < shapesContours.Size; i++)
+            {
+                double perimeter = CvInvoke.ArcLength(shapesContours[i], true);
+
+                var approximation = new VectorOfPoint();
+
+                CvInvoke.ApproxPolyDP(shapesContours[i], approximation, 0.04 * perimeter, true);
+
+                CvInvoke.DrawContours(inputImage, shapesContours, i,
+                    new MCvScalar(0, 0, 255), 2);
+
+                pictureBox3.Image = inputImage.ToBitmap();
+
+                //Moments moments = CvInvoke.Moments(shapesContours[i]);
+
+                //int x = (int)(moments.M10 / moments.M00);
+
+                //int y = (int)(moments.M01 / moments.M00);
+
+                if (approximation.Size == 4)
+                {
+                    var pointsOfSquare = approximation.ToArray();
+                    int x1 = pointsOfSquare[1].X;
+                    int y1 = pointsOfSquare[1].Y;
+                    int x2 = pointsOfSquare[3].X;
+                    int y2 = pointsOfSquare[3].Y;
+                    var width = 0;
+                    var height = 0;
+                    foreach (Point point in approximation.ToArray())
+                    {
+                        if (point.X != x1)
+                        {
+                            width = Math.Abs(point.X - x1) + 1;
+                        }
+                        if (point.Y != y1)
+                        {
+                            height = Math.Abs(point.Y - y1) + 1;
+                        }
+                    }
+
+                    Rectangle rectangle = new Rectangle(pointsOfSquare[0].X, pointsOfSquare[0].Y, width, height);
+                    UMat croppedUmat = new UMat(inputImage.ToUMat(), rectangle);
+                    croppedUmat.ToBitmap().Save(signaturePath);
+                }
+            }
         }
+
     }
 }

@@ -37,11 +37,12 @@
             openFileDialog1 = new OpenFileDialog();
             textBox1 = new TextBox();
             textBox2 = new TextBox();
-            textBox3 = new TextBox();
             listBox1 = new ListBox();
+            pictureBox3 = new PictureBox();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
             // 
             // menuStrip1
@@ -82,7 +83,6 @@
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             pictureBox1.Location = new Point(12, 38);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(380, 439);
@@ -93,7 +93,6 @@
             // pictureBox2
             // 
             pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            pictureBox2.BorderStyle = BorderStyle.FixedSingle;
             pictureBox2.Location = new Point(398, 38);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(380, 439);
@@ -120,35 +119,33 @@
             textBox2.Size = new Size(100, 23);
             textBox2.TabIndex = 5;
             // 
-            // textBox3
-            // 
-            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox3.Location = new Point(784, 38);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.ScrollBars = ScrollBars.Both;
-            textBox3.Size = new Size(310, 439);
-            textBox3.TabIndex = 6;
-            textBox3.WordWrap = false;
-            // 
             // listBox1
             // 
             listBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(1100, 38);
+            listBox1.Location = new Point(1170, 38);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(317, 439);
+            listBox1.Size = new Size(247, 439);
             listBox1.TabIndex = 7;
-            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            pictureBox3.Location = new Point(784, 38);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(380, 439);
+            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox3.TabIndex = 8;
+            pictureBox3.TabStop = false;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1429, 483);
+            Controls.Add(pictureBox3);
             Controls.Add(listBox1);
-            Controls.Add(textBox3);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Controls.Add(pictureBox2);
@@ -162,6 +159,7 @@
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -177,7 +175,7 @@
         private OpenFileDialog openFileDialog1;
         private TextBox textBox1;
         private TextBox textBox2;
-        private TextBox textBox3;
         private ListBox listBox1;
+        private PictureBox pictureBox3;
     }
 }
