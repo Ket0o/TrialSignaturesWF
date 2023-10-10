@@ -19,6 +19,24 @@ namespace Test
         public Form1()
         {
             InitializeComponent();
+
+            char[] types = new char[2] { 'F', 'G' };
+            foreach (char type in types)
+            {
+                for (int i = 1; i <= 9; i++)
+                {
+                    for (int j = 1; j <= 9; j++)
+                    {
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_0{j}.png";
+                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+                        inputImageName = $"u0{i}_{type}_0{j}";
+                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        SearchAndCropByRectangle(outputImage);
+                    }
+                }
+            }
         }
 
         public void ClearAllBoxes()
@@ -28,33 +46,33 @@ namespace Test
             listBox1.Items.Clear();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ClearAllBoxes();
-            try
-            {
-                DialogResult result = openFileDialog1.ShowDialog();
+        //private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    ClearAllBoxes();
+        //    try
+        //    {
+        //        DialogResult result = openFileDialog1.ShowDialog();
 
-                if (result == DialogResult.OK)
-                {
-                    inputImageName = openFileDialog1.FileName;
-                    inputImage = new Image<Bgr, byte>(inputImageName);
-                    inputImageName = Regex.Match(openFileDialog1.FileName,
-                        @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
-                    pictureBox1.Image = inputImage.ToBitmap();
-                    signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-                    signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-                }
-                else
-                {
-                    MessageBox.Show("No file selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //        if (result == DialogResult.OK)
+        //        {
+        //            inputImageName = openFileDialog1.FileName;
+        //            inputImage = new Image<Bgr, byte>(inputImageName);
+        //            inputImageName = Regex.Match(openFileDialog1.FileName,
+        //                @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+        //            pictureBox1.Image = inputImage.ToBitmap();
+        //            signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
+        //            signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("No file selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         public static VectorOfVectorOfPoint MuralsGetCountors(Image<Gray, byte> image)
         {
@@ -66,58 +84,67 @@ namespace Test
             return contours;
         }
 
-        private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ClearAllBoxes();
-            try
-            {
-                Image<Gray, byte> outputImage =
-                    inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+        //private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    ClearAllBoxes();
+        //    try
+        //    {
+               
+        //        //inputImageName = openFileDialog1.FileName;
+        //        //inputImage = new Image<Bgr, byte>(inputImageName);
+        //        //inputImageName = Regex.Match(openFileDialog1.FileName,
+        //        //    @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+        //        //pictureBox1.Image = inputImage.ToBitmap();
+        //        //signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
+        //        //signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
 
-                SearchAndCropByRectangle(outputImage);
+        //        //Image<Gray, byte> outputImage =
+        //        //    inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
 
-                VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
+        //        //SearchAndCropByRectangle(outputImage);
 
-                Array points = contours.ToArrayOfArray();
+        //        //VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
 
-                var totalPoints = 0;
-                var outputString = new StreamWriter(signatureCoordinatesPath);
+        //        //Array points = contours.ToArrayOfArray();
 
-                foreach (Point[] pointCoordinate in points)
-                {
-                    foreach (Point point in pointCoordinate)
-                    {
-                        listBox1.Items.Add(point);
-                        outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
-                        totalPoints++;
-                    }
-                }
+        //        //var totalPoints = 0;
+        //        //var outputString = new StreamWriter(signatureCoordinatesPath);
 
-                outputString.Close();
-                textBox1.Text = totalPoints.ToString();
+        //        //foreach (Point[] pointCoordinate in points)
+        //        //{
+        //        //    foreach (Point point in pointCoordinate)
+        //        //    {
+        //        //        listBox1.Items.Add(point);
+        //        //        outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
+        //        //        totalPoints++;
+        //        //    }
+        //        //}
 
-                if (checkBox1.Checked)
-                {
-                    Image<Gray, byte> blackBackground = new Image<Gray, byte>(inputImage.Width, inputImage.Height, new Gray(0));
+        //        //outputString.Close();
+        //        //textBox1.Text = totalPoints.ToString();
+
+        //        //if (checkBox1.Checked)
+        //        //{
+        //        //    Image<Gray, byte> blackBackground = new Image<Gray, byte>(inputImage.Width, inputImage.Height, new Gray(0));
 
 
-                    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(0, 0, 255));
+        //        //    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(0, 0, 255));
 
-                    pictureBox2.Image = blackBackground.ToBitmap();
+        //        //    pictureBox2.Image = blackBackground.ToBitmap();
 
-                }
-                else
-                {
-                    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(74, 144, 226));
+        //        //}
+        //        //else
+        //        //{
+        //        //    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(74, 144, 226));
 
-                    pictureBox2.Image = inputImage.ToBitmap();
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //        //    pictureBox2.Image = inputImage.ToBitmap();
+        //        //}
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         public void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
         {
