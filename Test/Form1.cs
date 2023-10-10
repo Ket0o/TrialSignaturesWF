@@ -134,10 +134,10 @@ namespace Test
 
                 CvInvoke.ApproxPolyDP(shapesContours[i], approximation, 0.04 * perimeter, true);
 
-                CvInvoke.DrawContours(inputImage, shapesContours, i,
-                    new MCvScalar(0, 0, 255), 2);
+                //CvInvoke.DrawContours(inputImage, shapesContours, i,
+                //    new MCvScalar(0, 0, 255), 2);
 
-                pictureBox3.Image = inputImage.ToBitmap();
+                //pictureBox3.Image = inputImage.ToBitmap();
 
                 //Moments moments = CvInvoke.Moments(shapesContours[i]);
 
@@ -148,25 +148,23 @@ namespace Test
                 if (approximation.Size == 4)
                 {
                     var pointsOfSquare = approximation.ToArray();
-                    int x1 = pointsOfSquare[1].X;
-                    int y1 = pointsOfSquare[1].Y;
-                    int x2 = pointsOfSquare[3].X;
-                    int y2 = pointsOfSquare[3].Y;
+                    int x = pointsOfSquare[0].X;
+                    int y = pointsOfSquare[0].Y;
                     var width = 0;
                     var height = 0;
                     foreach (Point point in approximation.ToArray())
                     {
-                        if (point.X != x1)
+                        if (point.X != x)
                         {
-                            width = Math.Abs(point.X - x1) + 1;
+                            width = Math.Abs(point.X - x) + 1;
                         }
-                        if (point.Y != y1)
+                        if (point.Y != y)
                         {
-                            height = Math.Abs(point.Y - y1) + 1;
+                            height = Math.Abs(point.Y - y) + 1;
                         }
                     }
 
-                    Rectangle rectangle = new Rectangle(pointsOfSquare[0].X, pointsOfSquare[0].Y, width, height);
+                    Rectangle rectangle = new Rectangle(x, y, width, height);
                     UMat croppedUmat = new UMat(inputImage.ToUMat(), rectangle);
                     croppedUmat.ToBitmap().Save(signaturePath);
                 }
