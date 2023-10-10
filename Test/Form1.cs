@@ -36,7 +36,47 @@ namespace Test
                         SearchAndCropByRectangle(outputImage);
                     }
                 }
+                for (int i = 1; i <= 9; i++)
+                {
+                    for (int j = 10; j <= 30; j++)
+                    {
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_{j}.png";
+                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+                        inputImageName = $"u0{i}_{type}_{j}";
+                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        SearchAndCropByRectangle(outputImage);
+                    }
+                }
+                for (int i = 10; i <= 45; i++)
+                {
+                    for (int j = 1; j <= 9; j++)
+                    {
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_0{j}.png";
+                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+                        inputImageName = $"u{i}_{type}_0{j}";
+                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        SearchAndCropByRectangle(outputImage);
+                    }
+                }
+                for (int i = 10; i <= 45; i++)
+                {
+                    for (int j = 10; j <= 30; j++)
+                    {
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_{j}.png";
+                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+                        inputImageName = $"u{i}_{type}_{j}";
+                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        SearchAndCropByRectangle(outputImage);
+                    }
+                }
             }
+            
         }
 
         public void ClearAllBoxes()
