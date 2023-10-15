@@ -61,14 +61,14 @@
             openToolStripMenuItem.Name = "openToolStripMenuItem";
             openToolStripMenuItem.Size = new Size(48, 22);
             openToolStripMenuItem.Text = "Open";
-            //openToolStripMenuItem.Click += openToolStripMenuItem_Click;
+            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // findContoursToolStripMenuItem
             // 
             findContoursToolStripMenuItem.Name = "findContoursToolStripMenuItem";
             findContoursToolStripMenuItem.Size = new Size(94, 22);
             findContoursToolStripMenuItem.Text = "Find Contours";
-            //findContoursToolStripMenuItem.Click += findContoursToolStripMenuItem_Click;
+            findContoursToolStripMenuItem.Click += findContoursToolStripMenuItem_Click;
             // 
             // checkBox1
             // 

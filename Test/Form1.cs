@@ -13,8 +13,9 @@ namespace Test
         private string signatureCoordinatesPath = "";
         private string signaturePath = "";
         private Image<Bgr, byte> inputImage = null;
-
-        private static string inputImageName = "";
+        const double minRectanglePerimeter = 0.4;
+        const double partOfPerimeterEpsilon = 0.07;
+		private static string inputImageName = "";
 
         public Form1()
         {
@@ -76,7 +77,6 @@ namespace Test
                     }
                 }
             }
-            
         }
 
         public void ClearAllBoxes()
@@ -86,33 +86,33 @@ namespace Test
             listBox1.Items.Clear();
         }
 
-        //private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    ClearAllBoxes();
-        //    try
-        //    {
-        //        DialogResult result = openFileDialog1.ShowDialog();
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearAllBoxes();
+            try
+            {
+                DialogResult result = openFileDialog1.ShowDialog();
 
-        //        if (result == DialogResult.OK)
-        //        {
-        //            inputImageName = openFileDialog1.FileName;
-        //            inputImage = new Image<Bgr, byte>(inputImageName);
-        //            inputImageName = Regex.Match(openFileDialog1.FileName,
-        //                @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
-        //            pictureBox1.Image = inputImage.ToBitmap();
-        //            signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-        //            signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("No file selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
+                if (result == DialogResult.OK)
+                {
+                    inputImageName = openFileDialog1.FileName;
+                    inputImage = new Image<Bgr, byte>(inputImageName);
+                    inputImageName = Regex.Match(openFileDialog1.FileName,
+                        @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
+                    pictureBox1.Image = inputImage.ToBitmap();
+                    signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
+                    //signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+                }
+                else
+                {
+                    MessageBox.Show("No file selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         public static VectorOfVectorOfPoint MuralsGetCountors(Image<Gray, byte> image)
         {
@@ -124,67 +124,61 @@ namespace Test
             return contours;
         }
 
-        //private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    ClearAllBoxes();
-        //    try
-        //    {
-               
-        //        //inputImageName = openFileDialog1.FileName;
-        //        //inputImage = new Image<Bgr, byte>(inputImageName);
-        //        //inputImageName = Regex.Match(openFileDialog1.FileName,
-        //        //    @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
-        //        //pictureBox1.Image = inputImage.ToBitmap();
-        //        //signatureCoordinatesPath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-        //        //signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
+        private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearAllBoxes();
+            try
+            {
+                Image<Gray, byte> outputImage =
+                    inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
 
-        //        //Image<Gray, byte> outputImage =
-        //        //    inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
 
-        //        //SearchAndCropByRectangle(outputImage);
+                Array points = contours.ToArrayOfArray();
 
-        //        //VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
+                var totalPoints = 0;
+                var outputString = new StreamWriter(signatureCoordinatesPath);
 
-        //        //Array points = contours.ToArrayOfArray();
+                foreach (Point[] pointCoordinate in points)
+                {
+	                totalPoints++;
+					if (totalPoints > 4)
+	                {
+		                foreach (Point point in pointCoordinate)
+		                {
+			                listBox1.Items.Add(point);
+			                outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
+			                //totalPoints++;
+						}
+                        //continue;
+					}
+					//totalPoints++;
+				}
 
-        //        //var totalPoints = 0;
-        //        //var outputString = new StreamWriter(signatureCoordinatesPath);
+                outputString.Close();
+                textBox1.Text = (totalPoints - 4).ToString();
 
-        //        //foreach (Point[] pointCoordinate in points)
-        //        //{
-        //        //    foreach (Point point in pointCoordinate)
-        //        //    {
-        //        //        listBox1.Items.Add(point);
-        //        //        outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
-        //        //        totalPoints++;
-        //        //    }
-        //        //}
+                if (checkBox1.Checked)
+                {
+                    Image<Gray, byte> blackBackground = new Image<Gray, byte>(inputImage.Width, inputImage.Height, new Gray(0));
 
-        //        //outputString.Close();
-        //        //textBox1.Text = totalPoints.ToString();
+                    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(0, 0, 255));
 
-        //        //if (checkBox1.Checked)
-        //        //{
-        //        //    Image<Gray, byte> blackBackground = new Image<Gray, byte>(inputImage.Width, inputImage.Height, new Gray(0));
+                    pictureBox2.Image = blackBackground.ToBitmap();
 
+                }
+                else
+                {
+                    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(74, 144, 226));
 
-        //        //    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(0, 0, 255));
-
-        //        //    pictureBox2.Image = blackBackground.ToBitmap();
-
-        //        //}
-        //        //else
-        //        //{
-        //        //    CvInvoke.DrawContours(inputImage, contours, -1, new MCvScalar(74, 144, 226));
-
-        //        //    pictureBox2.Image = inputImage.ToBitmap();
-        //        //}
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
+                    pictureBox2.Image = inputImage.ToBitmap();
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         public void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
         {
@@ -192,51 +186,60 @@ namespace Test
             var hierarchy = new UMat();
             CvInvoke.FindContours(outputImage, shapesContours, hierarchy,
                 Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+            //var outputString = new StreamWriter($"C:/Users/Кирилл/source/repos/TrialSignaturesWF/123.txt");
 
-            for (int i = 0; i < shapesContours.Size; i++)
+			for (int i = 0; i < shapesContours.Size; i++)
             {
                 double perimeter = CvInvoke.ArcLength(shapesContours[i], true);
 
+                if (perimeter < minRectanglePerimeter) 
+	                continue;
+
                 var approximation = new VectorOfPoint();
 
-                CvInvoke.ApproxPolyDP(shapesContours[i], approximation, 0.04 * perimeter, true);
+                CvInvoke.ApproxPolyDP(shapesContours[i], approximation, partOfPerimeterEpsilon * perimeter, true);
 
-                //CvInvoke.DrawContours(inputImage, shapesContours, i,
-                //    new MCvScalar(0, 0, 255), 2);
+				//CvInvoke.DrawContours(inputImage, shapesContours, i,
+				//    new MCvScalar(0, 0, 255), 2);
 
-                //pictureBox3.Image = inputImage.ToBitmap();
+				//pictureBox3.Image = inputImage.ToBitmap();
 
-                //Moments moments = CvInvoke.Moments(shapesContours[i]);
+				//Moments moments = CvInvoke.Moments(shapesContours[i]);
 
-                //int x = (int)(moments.M10 / moments.M00);
+				//int x = (int)(moments.M10 / moments.M00);
 
-                //int y = (int)(moments.M01 / moments.M00);
+				//int y = (int)(moments.M01 / moments.M00);
+				
 
-                if (approximation.Size == 4)
+				if (approximation.Size >= 4 && approximation.Size <= 8 && CvInvoke.IsContourConvex(approximation))
                 {
-                    var pointsOfSquare = approximation.ToArray();
-                    int x = pointsOfSquare[0].X;
-                    int y = pointsOfSquare[0].Y;
-                    var width = 0;
-                    var height = 0;
+
+                    //            var stringHelper = "";
+                    List<int> xPoInts = new List<int>();
+                    List<int> yPoInts = new List<int>();
                     foreach (Point point in approximation.ToArray())
                     {
-                        if (point.X != x)
-                        {
-                            width = Math.Abs(point.X - x) + 1;
-                        }
-                        if (point.Y != y)
-                        {
-                            height = Math.Abs(point.Y - y) + 1;
-                        }
+                        yPoInts.Add(point.Y);
+                        xPoInts.Add(point.X);
                     }
+                    //               outputString.WriteLine(stringHelper);
 
-                    Rectangle rectangle = new Rectangle(x, y, width, height);
-                    UMat croppedUmat = new UMat(inputImage.ToUMat(), rectangle);
+                    Rectangle rectangleTest = new Rectangle(xPoInts.Min() + 2, 
+															yPoInts.Min() + 5, 
+															xPoInts.Max() - xPoInts.Min() - 2,
+															yPoInts.Max() - yPoInts.Min() - 2);
+					Rectangle rectangle = CvInvoke.BoundingRectangle(approximation);
+					//Rectangle rectangle = new Rectangle(xPoInts.Min() + 10, 
+														//yPoInts.Min() + 10, 
+														//xPoInts.Max() - xPoInts.Min() + 1, 
+														//yPoInts.Max() - yPoInts.Min() + 1);
+	                
+					UMat croppedUmat = new UMat(inputImage.ToUMat(), rectangleTest);
                     croppedUmat.ToBitmap().Save(signaturePath);
                 }
             }
-        }
+            //outputString.Close();
+		}
 
     }
 }
