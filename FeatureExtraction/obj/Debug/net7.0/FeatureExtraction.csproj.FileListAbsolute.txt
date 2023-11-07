@@ -1,0 +1,14 @@
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\bin\Debug\net7.0\FeatureExtraction.exe
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\bin\Debug\net7.0\FeatureExtraction.deps.json
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\bin\Debug\net7.0\FeatureExtraction.runtimeconfig.json
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\bin\Debug\net7.0\FeatureExtraction.dll
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\bin\Debug\net7.0\FeatureExtraction.pdb
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.AssemblyInfoInputs.cache
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.AssemblyInfo.cs
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.csproj.CoreCompileInputs.cache
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.dll
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\refint\FeatureExtraction.dll
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.pdb
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\FeatureExtraction.genruntimeconfig.cache
+C:\Users\Кирилл\source\repos\TrialSignaturesWF\FeatureExtraction\obj\Debug\net7.0\ref\FeatureExtraction.dll
