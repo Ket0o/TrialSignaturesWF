@@ -12,126 +12,150 @@ namespace Test
 {
     public partial class Form1 : Form
     {
-        private string signatureCoordinatesPath = "";
-        private string signaturePath = "";
-        private Image<Bgr, byte> inputImage = null;
-        const double minRectanglePerimeter = 0.4;
-        const double partOfPerimeterEpsilon = 0.07;
-		private static string inputImageName = "";
+	    public string SignatureCoordinatesPath = "";
+        private readonly string _signaturePath = "";
+        private readonly Image<Bgr, byte> _inputImage;
+        private const double MinRectanglePerimeter = 0.4;
+        private const double PartOfPerimeterEpsilon = 0.07;
 
         public Form1()
         {
-            InitializeComponent();
+	        string inputImageName;
+	        InitializeComponent();
 
-            char[] types = new char[2] { 'F', 'G' };
-            foreach (char type in types)
+            var types = new char[2] { 'F', 'G' };
+            foreach (var type in types)
             {
-                for (int i = 1; i <= 9; i++)
+                for (var i = 1; i <= 9; i++)
                 {
-                    for (int j = 1; j <= 9; j++)
+                    for (var j = 1; j <= 9; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_0{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u0{i}_{type}_0{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u0{i}_{type}_0{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"{inputImageName}.png";
+                        var outputImage = _inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
+	                        new Gray(230), new Gray(255));
                         SearchAndCropByRectangle(outputImage);
                     }
                 }
-                for (int i = 1; i <= 9; i++)
+                for (var i = 1; i <= 9; i++)
                 {
-                    for (int j = 10; j <= 30; j++)
+                    for (var j = 10; j <= 30; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u0{i}_{type}_{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u0{i}_{type}_{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"{inputImageName}.png";
+                        var outputImage = _inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
+	                        new Gray(230), new Gray(255));
                         SearchAndCropByRectangle(outputImage);
                     }
                 }
-                for (int i = 10; i <= 45; i++)
+                for (var i = 10; i <= 45; i++)
                 {
-                    for (int j = 1; j <= 9; j++)
+                    for (var j = 1; j <= 9; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_0{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u{i}_{type}_0{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u{i}_{type}_0{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"{inputImageName}.png";
+                        var outputImage = _inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
+	                        new Gray(230), new Gray(255));
                         SearchAndCropByRectangle(outputImage);
                     }
                 }
-                for (int i = 10; i <= 45; i++)
+                for (var i = 10; i <= 45; i++)
                 {
-                    for (int j = 10; j <= 30; j++)
+                    for (var j = 10; j <= 30; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u{i}_{type}_{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u{i}_{type}_{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/{inputImageName}.png";
-                        Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"{inputImageName}.png";
+                        var outputImage = _inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
+	                        new Gray(230), new Gray(255));
                         SearchAndCropByRectangle(outputImage);
                     }
                 }
             }
 
-            foreach (char type in types)
+            foreach (var type in types)
             {
-                for (int i = 1; i <= 9; i++)
+                for (var i = 1; i <= 9; i++)
                 {
-                    for (int j = 1; j <= 9; j++)
+                    for (var j = 1; j <= 9; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_0{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u0{i}_{type}_0{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u0{i}_{type}_0{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-                        //Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
-                        FindContours(signaturePath, inputImage);
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/" +
+                                         $"{inputImageName}.txt";
+                        /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().
+	                        ThresholdBinaryInv(new Gray(230), new Gray(255));*/
+                        FindContours(_signaturePath, _inputImage);
                     }
                 }
-                for (int i = 1; i <= 9; i++)
+                for (var i = 1; i <= 9; i++)
                 {
-                    for (int j = 10; j <= 30; j++)
+                    for (var j = 10; j <= 30; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u0{i}_{type}_{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u0{i}_{type}_{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u0{i}_{type}_{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-                        //Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
-                        FindContours(signaturePath, inputImage);
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/" +
+                                         $"{inputImageName}.txt";
+                        /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
+	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
+                        FindContours(_signaturePath, _inputImage);
                     }
                 }
-                for (int i = 10; i <= 45; i++)
+                for (var i = 10; i <= 45; i++)
                 {
-                    for (int j = 1; j <= 9; j++)
+                    for (var j = 1; j <= 9; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_0{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u{i}_{type}_0{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u{i}_{type}_0{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-                        //Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
-                        FindContours(signaturePath, inputImage);
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/" +
+                                         $"{inputImageName}.txt";
+                        /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
+	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
+                        FindContours(_signaturePath, _inputImage);
                     }
                 }
-                for (int i = 10; i <= 45; i++)
+                for (var i = 10; i <= 45; i++)
                 {
-                    for (int j = 10; j <= 30; j++)
+                    for (var j = 10; j <= 30; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/u{i}_{type}_{j}.png";
-                        inputImage = new Image<Bgr, byte>(inputImageName);
+                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                                         $"u{i}_{type}_{j}.png";
+                        _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
                         inputImageName = $"u{i}_{type}_{j}";
-                        signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/{inputImageName}.txt";
-                        //Image<Gray, byte> outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
-                        FindContours(signaturePath, inputImage);
+                        _signaturePath = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/" +
+                                         $"{inputImageName}.txt";
+                        /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
+	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
+                        FindContours(_signaturePath, _inputImage);
                     }
                 }
             }
@@ -172,9 +196,9 @@ namespace Test
             //}
         }
 
-        public static VectorOfVectorOfPoint MuralsGetCountors(Image<Gray, byte> image)
+        private static VectorOfVectorOfPoint MuralsGetCountors(IInputOutputArray image)
         {
-            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            var contours = new VectorOfVectorOfPoint();
             var hierarchy = new UMat();
             CvInvoke.FindContours(image, contours, hierarchy,
                 Emgu.CV.CvEnum.RetrType.Tree, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
@@ -182,47 +206,39 @@ namespace Test
             return contours;
         }
 
-        public void FindContours(string signatureCoordinatesPath, Image<Bgr, byte> inputImage)
+        private void FindContours(string signatureCoordinatesPath, Image<Bgr, byte> inputImage)
         {
-	        Image<Gray, byte> outputImage =
-		        inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
+	        var outputImage =
+		        inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
+			        new Gray(230), new Gray(255));
 
-	        VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
+	        var contours = MuralsGetCountors(outputImage);
 
-	        List<Point> PoInts = new List<Point>();
+	        var poInts = new List<Point>();
 
-			for (int i = 0; i < contours.Size; i++)
+			for (var i = 0; i < contours.Size; i++)
 	        {
 				var approximation = new VectorOfPoint();
 
-				CvInvoke.ApproxPolyDP(contours[i], approximation, partOfPerimeterEpsilon * CvInvoke.ArcLength(contours[i], true), true);
+				CvInvoke.ApproxPolyDP(contours[i], approximation, PartOfPerimeterEpsilon * CvInvoke.ArcLength(
+					contours[i], true), true);
 
-				if (approximation.Size >= 4 && approximation.Size <= 8 && CvInvoke.IsContourConvex(approximation))
-				{
-					foreach (Point point in approximation.ToArray())
-					{
-						PoInts.Add(point);
-					}
-				}
+				if (approximation.Size < 4 || approximation.Size > 8 ||
+				    !CvInvoke.IsContourConvex(approximation)) continue;
+				poInts.AddRange(approximation.ToArray());
 	        }
 			
 	        Array points = contours.ToArrayOfArray();
-
 	        
-
-	        var totalPoints = 0;
+	        const int totalPoints = 0;
 	        var outputString = new StreamWriter(signatureCoordinatesPath);
 
 			foreach (Point[] pointsCoordinate in points)
 			{
-				Point[] pointCoordinate = pointsCoordinate;
+				var pointCoordinate = poInts.Aggregate(pointsCoordinate, (current, point) => current
+					.Where(e => e != point).ToArray());
 
-				foreach (Point point in PoInts)
-				{
-					pointCoordinate = pointCoordinate.Where(e => e != point).ToArray();
-				}
-
-				foreach (Point point in pointCoordinate)
+				foreach (var point in pointCoordinate)
 				{
 					outputString.WriteLine(point.X.ToString() + ", " + point.Y.ToString());
 				}
@@ -290,34 +306,31 @@ namespace Test
 
         public static Bitmap cropAtRect( Bitmap b, Rectangle r)
         {
-	        using (var nb = new Bitmap(r.Width, r.Height))
-	        {
-		        using (Graphics g = Graphics.FromImage(nb))
-		        {
-			        g.DrawImage(b, -r.X, -r.Y);
-			        return nb;
-		        }
-	        }
+	        using var nb = new Bitmap(r.Width, r.Height);
+	        using Graphics g = Graphics.FromImage(nb);
+	        g.DrawImage(b, -r.X, -r.Y);
+	        return nb;
         }
 
-		public void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
+        private void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
         {
-            VectorOfVectorOfPoint shapesContours = new VectorOfVectorOfPoint();
+            var shapesContours = new VectorOfVectorOfPoint();
             var hierarchy = new UMat();
             CvInvoke.FindContours(outputImage, shapesContours, hierarchy,
                 Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
             //var outputString = new StreamWriter($"C:/Users/Кирилл/source/repos/TrialSignaturesWF/123.txt");
 
-			for (int i = 0; i < shapesContours.Size; i++)
+			for (var i = 0; i < shapesContours.Size; i++)
             {
-                double perimeter = CvInvoke.ArcLength(shapesContours[i], true);
+                var perimeter = CvInvoke.ArcLength(shapesContours[i], true);
 
-                if (perimeter < minRectanglePerimeter) 
+                if (perimeter < MinRectanglePerimeter) 
 	                continue;
 
                 var approximation = new VectorOfPoint();
 
-                CvInvoke.ApproxPolyDP(shapesContours[i], approximation, partOfPerimeterEpsilon * perimeter, true);
+                CvInvoke.ApproxPolyDP(shapesContours[i], 
+	                approximation, PartOfPerimeterEpsilon * perimeter, true);
 
                 //CvInvoke.DrawContours(inputImage, shapesContours, i,
                 //    new MCvScalar(0, 0, 255), 2);
@@ -346,43 +359,39 @@ namespace Test
                 //           }
 
 
-
-
-                if (approximation.Size >= 4 && approximation.Size <= 8 && CvInvoke.IsContourConvex(approximation))
+                if (approximation.Size < 4 || approximation.Size > 8 ||
+                    !CvInvoke.IsContourConvex(approximation)) continue;
+                //            var stringHelper = "";
+                var xPoInts = new List<int>();
+                var yPoInts = new List<int>();
+                foreach (var point in approximation.ToArray())
                 {
-
-                    //            var stringHelper = "";
-                    List<int> xPoInts = new List<int>();
-                    List<int> yPoInts = new List<int>();
-                    foreach (Point point in approximation.ToArray())
-                    {
-                        yPoInts.Add(point.Y);
-                        xPoInts.Add(point.X);
-                    }
-                    //               outputString.WriteLine(stringHelper);
-
-                    Rectangle rectangleTest = new Rectangle(xPoInts.Min(),
-											               yPoInts.Max(),
-											               xPoInts.Max() - xPoInts.Min(),
-											               yPoInts.Max() - yPoInts.Min());
-
-
-                    Rectangle rectangle = CvInvoke.BoundingRectangle(approximation);
-                    //Rectangle rectangle = new Rectangle(xPoInts.Min() + 10, 
-                    //yPoInts.Min() + 10, 
-                    //xPoInts.Max() - xPoInts.Min() + 1, 
-                    //yPoInts.Max() - yPoInts.Min() + 1);
-                    //rectangle.X = 10;
-                    //rectangle.Y = yPoInts.Max();
-
-
-
-                    UMat croppedUmat = new UMat(inputImage.ToUMat(), rectangle);
-                    croppedUmat.ToBitmap().Save(signaturePath);
-
-                    //var croppedBitMap = cropAtRect(inputImage.ToBitmap(), rectangleTest);
-                    //croppedBitMap.Save(signaturePath);
+	                yPoInts.Add(point.Y);
+	                xPoInts.Add(point.X);
                 }
+                //               outputString.WriteLine(stringHelper);
+
+                var rectangleTest = new Rectangle(xPoInts.Min(),
+	                yPoInts.Max(),
+	                xPoInts.Max() - xPoInts.Min(),
+	                yPoInts.Max() - yPoInts.Min());
+
+
+                var rectangle = CvInvoke.BoundingRectangle(approximation);
+                //Rectangle rectangle = new Rectangle(xPoInts.Min() + 10, 
+                //yPoInts.Min() + 10, 
+                //xPoInts.Max() - xPoInts.Min() + 1, 
+                //yPoInts.Max() - yPoInts.Min() + 1);
+                //rectangle.X = 10;
+                //rectangle.Y = yPoInts.Max();
+
+
+
+                var croppedUmat = new UMat(_inputImage.ToUMat(), rectangle);
+                croppedUmat.ToBitmap().Save(_signaturePath);
+
+                //var croppedBitMap = cropAtRect(inputImage.ToBitmap(), rectangleTest);
+                //croppedBitMap.Save(signaturePath);
             }
             //outputString.Close();
         }
