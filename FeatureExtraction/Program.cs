@@ -1,9 +1,11 @@
-﻿class Program
+﻿namespace FeatureExtraction;
+
+internal static class Program
 {
-	static void Main()
+	private static void Main()
 	{
 		// Путь к файлу с координатами
-		string filePath = "C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/u01_F_01.txt";
+		const string filePath = "C:/Users/Кирилл/source/repos/TrialSignaturesWF/AllCoordinates/u01_F_01.txt";
 
 		// Считывание координат из файла
 		List<Tuple<double, double>> coordinates = ReadCoordinatesFromFile(filePath);
@@ -12,40 +14,38 @@
 		int pointIndex = 5;
 
 		// Извлечение признаков из координат
-		if (coordinates.Count > 0)
-		{
-			//общая длина
-			double totalLength = CalculateTotalLength(coordinates);
-			//средняя длина
-			double averageLength = CalculateAverageLineLength(coordinates);
-			//плотность
-			double density = CalculateDensity(coordinates);
-			// Рассчитываем углы между последовательными точками
-			List<double> angles = CalculateAngles(coordinates);
-			// Вычисление радиуса кривизны
-			double curvatureRadius = CalculateCurvatureRadius(coordinates, pointIndex);
-			// Вычилсение скорости изменения направления
-			double directionChangeRate = CalculateDirectionChangeRate(coordinates);
-			// Вычисление частоты изменения направления
-			double directionChangeFrequency = CalculateDirectionChangeFrequency(coordinates);
+		if (coordinates.Count <= 0) return;
+		//общая длина
+		double totalLength = CalculateTotalLength(coordinates);
+		//средняя длина
+		double averageLength = CalculateAverageLineLength(coordinates);
+		//плотность
+		double density = CalculateDensity(coordinates);
+		// Рассчитываем углы между последовательными точками
+		List<double> angles = CalculateAngles(coordinates);
+		// Вычисление радиуса кривизны
+		double curvatureRadius = CalculateCurvatureRadius(coordinates, pointIndex);
+		// Вычилсение скорости изменения направления
+		double directionChangeRate = CalculateDirectionChangeRate(coordinates);
+		// Вычисление частоты изменения направления
+		double directionChangeFrequency = CalculateDirectionChangeFrequency(coordinates);
 
-			// Вывод результатов
-			Console.WriteLine($"Общая длина: {totalLength}");
-			Console.WriteLine($"Средняя длина: {averageLength}");
-			Console.WriteLine($"Плотность: {density}");
-			Console.WriteLine($"Радиус кривизны: {curvatureRadius}");
-			Console.WriteLine($"Скорость изменения направления: {directionChangeRate}");
-			Console.WriteLine($"Частота изменения направления: {directionChangeFrequency}");
-			Console.WriteLine("Углы:");
-			foreach (var angle in angles)
-			{
-				Console.WriteLine(angle);
-			}
+		// Вывод результатов
+		Console.WriteLine($"Общая длина: {totalLength}");
+		Console.WriteLine($"Средняя длина: {averageLength}");
+		Console.WriteLine($"Плотность: {density}");
+		Console.WriteLine($"Радиус кривизны: {curvatureRadius}");
+		Console.WriteLine($"Скорость изменения направления: {directionChangeRate}");
+		Console.WriteLine($"Частота изменения направления: {directionChangeFrequency}");
+		Console.WriteLine("Углы:");
+		foreach (var angle in angles)
+		{
+			Console.WriteLine(angle);
 		}
 	}
 
 	// Функция для чтения координат из файла
-	static List<Tuple<double, double>> ReadCoordinatesFromFile(string filePath)
+	private static List<Tuple<double, double>> ReadCoordinatesFromFile(string filePath)
 	{
 		var coordinates = new List<Tuple<double, double>>();
 
@@ -70,7 +70,7 @@
 	}
 
 	// Функция для вычисления общей длины линий
-	static double CalculateTotalLength(List<Tuple<double, double>> coordinates)
+	private static double CalculateTotalLength(List<Tuple<double, double>> coordinates)
 	{
 		double totalLength = 0;
 		for (int i = 1; i < coordinates.Count; i++)
@@ -83,13 +83,13 @@
 	}
 
 	// Функция для вычисления средней длины линий
-	static double CalculateAverageLineLength(List<Tuple<double, double>> coordinates)
+	private static double CalculateAverageLineLength(List<Tuple<double, double>> coordinates)
 	{
 		return CalculateTotalLength(coordinates) / (coordinates.Count - 1);
 	}
 
 	// Функция для вычисления плотности
-	static double CalculateDensity(List<Tuple<double, double>> coordinates)
+	private static double CalculateDensity(List<Tuple<double, double>> coordinates)
 	{
 		// Плотность может быть оценена как отношение общей длины к общей площади подписи
 		// В данном примере используется простая оценка плотности
@@ -107,7 +107,7 @@
 	}
 
 	// Функция для вычисления углов между последовательными точками
-	static List<double> CalculateAngles(List<Tuple<double, double>> coordinates)
+	private static List<double> CalculateAngles(List<Tuple<double, double>> coordinates)
 	{
 		List<double> angles = new List<double>();
 
@@ -128,7 +128,7 @@
 	}
 
 	// Функция для вычисления радиуса кривизны
-	static double CalculateCurvatureRadius(List<Tuple<double, double>> coordinates, int pointIndex)
+	private static double CalculateCurvatureRadius(List<Tuple<double, double>> coordinates, int pointIndex)
 	{
 		// Рассмотрим три последовательные точки
 		int previousPoint = Math.Max(pointIndex - 1, 0);
@@ -150,7 +150,7 @@
 	}
 
 	// Функция для вычисления скорости изменения направления
-	static double CalculateDirectionChangeRate(List<Tuple<double, double>> coordinates)
+	private static double CalculateDirectionChangeRate(List<Tuple<double, double>> coordinates)
 	{
 		double directionChangeRate = 0;
 
@@ -172,7 +172,7 @@
 	}
 
 	// Функция для вычисления частоты изменения направления
-	static double CalculateDirectionChangeFrequency(List<Tuple<double, double>> coordinates)
+	private static double CalculateDirectionChangeFrequency(List<Tuple<double, double>> coordinates)
 	{
 		int directionChangeCount = 0;
 		double threshold = 0.1; // Пример значения порога для изменения направления
