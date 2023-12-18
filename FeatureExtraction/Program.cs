@@ -11,7 +11,7 @@ internal static class Program
 		List<Tuple<double, double>> coordinates = ReadCoordinatesFromFile(filePath);
 
 		//индекс точки, для которой необходимо вычислить радиус кривизны
-		int pointIndex = 5;
+		var pointIndex = 5;
 
 		// Извлечение признаков из координат
 		if (coordinates.Count <= 0) return;
@@ -52,10 +52,11 @@ internal static class Program
 		try
 		{
 			string[] lines = File.ReadAllLines(filePath);
-			foreach (string line in lines)
+			foreach (var line in lines)
 			{
 				string[] values = line.Split(',');
-				if (values.Length == 2 && double.TryParse(values[0], out double x) && double.TryParse(values[1], out double y))
+				if (values.Length == 2 && double.TryParse(values[0], out double x) && double.TryParse(values[1],
+					    out double y))
 				{
 					coordinates.Add(new Tuple<double, double>(x, y));
 				}
@@ -73,7 +74,7 @@ internal static class Program
 	private static double CalculateTotalLength(List<Tuple<double, double>> coordinates)
 	{
 		double totalLength = 0;
-		for (int i = 1; i < coordinates.Count; i++)
+		for (var i = 1; i < coordinates.Count; i++)
 		{
 			double deltaX = coordinates[i].Item1 - coordinates[i - 1].Item1;
 			double deltaY = coordinates[i].Item2 - coordinates[i - 1].Item2;
@@ -109,9 +110,9 @@ internal static class Program
 	// Функция для вычисления углов между последовательными точками
 	private static List<double> CalculateAngles(List<Tuple<double, double>> coordinates)
 	{
-		List<double> angles = new List<double>();
+		var angles = new List<double>();
 
-		for (int i = 1; i < coordinates.Count - 1; i++)
+		for (var i = 1; i < coordinates.Count - 1; i++)
 		{
 			double x1 = coordinates[i - 1].Item1 - coordinates[i].Item1;
 			double y1 = coordinates[i - 1].Item2 - coordinates[i].Item2;
@@ -143,8 +144,9 @@ internal static class Program
 		double x2 = coordinates[nextPoint].Item1;
 		double y2 = coordinates[nextPoint].Item2;
 
-		double curvatureRadius = Math.Abs((x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0)) /
-		                         (Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)) + 1e-6); // +1e-6 для избежания деления на ноль
+		double curvatureRadius = Math.Abs((x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0)) 
+		                         / (Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)) 
+		                            + 1e-6); // +1e-6 для избежания деления на ноль
 
 		return curvatureRadius;
 	}
@@ -154,7 +156,7 @@ internal static class Program
 	{
 		double directionChangeRate = 0;
 
-		for (int i = 2; i < coordinates.Count - 1; i++)
+		for (var i = 2; i < coordinates.Count - 1; i++)
 		{
 			double x1 = coordinates[i - 2].Item1 - coordinates[i - 1].Item1;
 			double y1 = coordinates[i - 2].Item2 - coordinates[i - 1].Item2;
@@ -174,10 +176,10 @@ internal static class Program
 	// Функция для вычисления частоты изменения направления
 	private static double CalculateDirectionChangeFrequency(List<Tuple<double, double>> coordinates)
 	{
-		int directionChangeCount = 0;
-		double threshold = 0.1; // Пример значения порога для изменения направления
+		var directionChangeCount = 0;
+		var threshold = 0.1; // Пример значения порога для изменения направления
 
-		for (int i = 2; i < coordinates.Count - 1; i++)
+		for (var i = 2; i < coordinates.Count - 1; i++)
 		{
 			double x1 = coordinates[i - 2].Item1 - coordinates[i - 1].Item1;
 			double y1 = coordinates[i - 2].Item2 - coordinates[i - 1].Item2;

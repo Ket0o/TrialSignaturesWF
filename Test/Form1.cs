@@ -107,14 +107,14 @@ namespace Test
                                          $"{inputImageName}.txt";
                         /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>().
 	                        ThresholdBinaryInv(new Gray(230), new Gray(255));*/
-                        FindContours(_signaturePath, _inputImage);
+                        FindCoordinates(_signaturePath, _inputImage);
                     }
                 }
                 for (var i = 1; i <= 9; i++)
                 {
                     for (var j = 10; j <= 30; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                        inputImageName = "C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
                                          $"u0{i}_{type}_{j}.png";
                         _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
@@ -123,14 +123,14 @@ namespace Test
                                          $"{inputImageName}.txt";
                         /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
 	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
-                        FindContours(_signaturePath, _inputImage);
+                        FindCoordinates(_signaturePath, _inputImage);
                     }
                 }
                 for (var i = 10; i <= 45; i++)
                 {
                     for (var j = 1; j <= 9; j++)
                     {
-                        inputImageName = $"C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
+                        inputImageName = "C:/Users/Кирилл/source/repos/TrialSignaturesWF/Podpisi/" +
                                          $"u{i}_{type}_0{j}.png";
                         _inputImage = new Image<Bgr, byte>(inputImageName);
                         //inputImageName = Regex.Match(inputImageName, @"\\([^\\]+)\.(png|jpg)").ToString()[..^4];
@@ -139,7 +139,7 @@ namespace Test
                                          $"{inputImageName}.txt";
                         /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
 	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
-                        FindContours(_signaturePath, _inputImage);
+                        FindCoordinates(_signaturePath, _inputImage);
                     }
                 }
                 for (var i = 10; i <= 45; i++)
@@ -155,21 +155,21 @@ namespace Test
                                          $"{inputImageName}.txt";
                         /*var outputImage = inputImage.SmoothGaussian(5).Convert<Gray, byte>()
 	                        .ThresholdBinaryInv(new Gray(230), new Gray(255));*/
-                        FindContours(_signaturePath, _inputImage);
+                        FindCoordinates(_signaturePath, _inputImage);
                     }
                 }
             }
         }
 
-        public void ClearAllBoxes()
+        /*public void ClearAllBoxes()
         {
             textBox1.Clear();
             textBox2.Clear();
             listBox1.Items.Clear();
-        }
+        }*/
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        /*private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {*/
             //ClearAllBoxes();
             //try
             //{
@@ -194,9 +194,14 @@ namespace Test
             //{
             //    MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
-        }
-
-        private static VectorOfVectorOfPoint MuralsGetCountors(IInputOutputArray image)
+        /*}*/
+		
+        /// <summary>
+        /// Найти контуры.
+        /// </summary>
+        /// <param name="image">Изображение.</param>
+        /// <returns>Контуры.</returns>
+        private static VectorOfVectorOfPoint GetCountors(IInputOutputArray image)
         {
             var contours = new VectorOfVectorOfPoint();
             var hierarchy = new UMat();
@@ -205,14 +210,19 @@ namespace Test
 
             return contours;
         }
-
-        private void FindContours(string signatureCoordinatesPath, Image<Bgr, byte> inputImage)
+		
+        /// <summary>
+        /// Найти координаты.
+        /// </summary>
+        /// <param name="signatureCoordinatesPath">Путь для записи.</param>
+        /// <param name="inputImage">Входное изображение.</param>
+        private void FindCoordinates(string signatureCoordinatesPath, Image<Bgr, byte> inputImage)
         {
 	        var outputImage =
 		        inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(
 			        new Gray(230), new Gray(255));
 
-	        var contours = MuralsGetCountors(outputImage);
+	        var contours = GetCountors(outputImage);
 
 	        var poInts = new List<Point>();
 
@@ -248,15 +258,15 @@ namespace Test
 	        textBox1.Text = (totalPoints - 4).ToString();
 		}
 
-        private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+    //    private void findContoursToolStripMenuItem_Click(object sender, EventArgs e)
+    //    {
     //        ClearAllBoxes();
     //        try
     //        {
     //            Image<Gray, byte> outputImage =
     //                inputImage.SmoothGaussian(5).Convert<Gray, byte>().ThresholdBinaryInv(new Gray(230), new Gray(255));
 
-    //            VectorOfVectorOfPoint contours = MuralsGetCountors(outputImage);
+    //            VectorOfVectorOfPoint contours = GetCountors(outputImage);
 
     //            Array points = contours.ToArrayOfArray();
 
@@ -302,16 +312,26 @@ namespace Test
     //        {
     //            MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     //        }
-        }
+    //    }
 
-        public static Bitmap cropAtRect( Bitmap b, Rectangle r)
+		/// <summary>
+		/// Метод обрезки изображения по прямоугольнику. 
+		/// </summary>
+		/// <param name="inputImageInBit">Входное изображение в битах.</param>
+		/// <param name="croppingRectangle">Прямоугольник по которому обрезать.</param>
+		/// <returns>Обрезанное изображение.</returns>
+        public static Bitmap cropAtRect(Bitmap inputImageInBit, Rectangle croppingRectangle)
         {
-	        using var nb = new Bitmap(r.Width, r.Height);
+	        using var nb = new Bitmap(croppingRectangle.Width, croppingRectangle.Height);
 	        using Graphics g = Graphics.FromImage(nb);
-	        g.DrawImage(b, -r.X, -r.Y);
+	        g.DrawImage(inputImageInBit, -croppingRectangle.X, -croppingRectangle.Y);
 	        return nb;
         }
 
+		/// <summary>
+		/// Находит прямоугольник и обрезает по нему.
+		/// </summary>
+		/// <param name="outputImage">Итоговое изображение.</param>
         private void SearchAndCropByRectangle(Image<Gray, byte> outputImage)
         {
             var shapesContours = new VectorOfVectorOfPoint();
@@ -385,8 +405,7 @@ namespace Test
                 //rectangle.X = 10;
                 //rectangle.Y = yPoInts.Max();
 
-
-
+                
                 var croppedUmat = new UMat(_inputImage.ToUMat(), rectangle);
                 croppedUmat.ToBitmap().Save(_signaturePath);
 
