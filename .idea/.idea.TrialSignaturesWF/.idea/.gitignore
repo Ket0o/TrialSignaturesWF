@@ -3,6 +3,8 @@
 /workspace.xml
 # Rider ignored files
 /.idea.TrialSignaturesWF.iml
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
 /contentModel.xml
 /projectSettingsUpdater.xml
 /modules.xml
@@ -11,3 +13,4 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
