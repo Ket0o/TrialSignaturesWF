@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e66386a1-2cba-430c-a27e-6d0b85c85cb0" name="Changes" comment="fix: moved to src">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TrialSignaturesWF/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TrialSignaturesWF/.idea/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="e66386a1-2cba-430c-a27e-6d0b85c85cb0" name="Changes" comment="fix: gitignore" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +71,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708174026704</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix: gitignore">
+      <option name="closed" value="true" />
+      <created>1708174760550</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1708174760550</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -90,6 +98,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: moved to src" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: moved to src" />
+    <MESSAGE value="fix: gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: gitignore" />
   </component>
 </project>
