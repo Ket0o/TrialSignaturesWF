@@ -65,6 +65,13 @@ font-family: Times New Roman;</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="findSignaturesButton">
+         <property name="text">
+          <string>Найти подписи</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>

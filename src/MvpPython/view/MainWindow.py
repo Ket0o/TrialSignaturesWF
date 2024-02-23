@@ -63,6 +63,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.chooseImageButton)
 
+        self.findSignaturesButton = QPushButton(self.layoutWidget1)
+        self.findSignaturesButton.setObjectName(u"findSignaturesButton")
+
+        self.verticalLayout.addWidget(self.findSignaturesButton)
+
 
         self.verticalLayout_3.addLayout(self.verticalLayout)
 
@@ -82,5 +87,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0441\u043f\u043e\u0437\u043d\u043e\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0434\u043f\u0438\u0441\u0438 \u043d\u0430 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0438", None))
         self.choseImageLabel.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435:", None))
         self.chooseImageButton.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c", None))
+        self.findSignaturesButton.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0439\u0442\u0438 \u043f\u043e\u0434\u043f\u0438\u0441\u0438", None))
     # retranslateUi
 
