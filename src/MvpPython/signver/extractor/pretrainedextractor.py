@@ -1,4 +1,4 @@
-from signver.extractor import BaseExtractor
+from src.MvpPython.signver.extractor import BaseExtractor
 
 
 class PretrainedExtractor(BaseExtractor):

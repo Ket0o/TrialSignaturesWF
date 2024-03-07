@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-from signver.utils.data_utils import mkdir, load_json_file, save_json_file
+from src.MvpPython.signver.utils.data_utils import mkdir, load_json_file, save_json_file
 import logging
 import faiss
 import os

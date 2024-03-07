@@ -1,1 +1,1 @@
-from signver.cleaner.cleaner import Cleaner
+from src.MvpPython.signver.cleaner.cleaner import Cleaner

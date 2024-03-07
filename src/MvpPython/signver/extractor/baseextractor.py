@@ -1,6 +1,6 @@
 
 import tensorflow as tf
-from signver.utils.data_utils import load_model_from_weights
+from src.MvpPython.signver.utils.data_utils import load_model_from_weights
 
 
 class BaseExtractor():
