@@ -26,7 +26,7 @@ class Localization_Predictions:
         Инвертирует изображение.
         :return:
         """
-        self.file_path = Handler.get_file_path()
+        self.file_path = Handler.get_file_path()#Путь к выбранному изображению
         self.image_np = data_utils.img_to_np_array(self.file_path)
         self.inverted_image_np = data_utils.img_to_np_array(self.file_path, invert_image=True)
         self.img_tensor = tf.convert_to_tensor(self.inverted_image_np)
