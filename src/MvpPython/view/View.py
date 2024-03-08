@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene
-from view.MainWindow import Ui_MainWindow
+from src.MvpPython.view.MainWindow import Ui_MainWindow
 
 class SignaturesDetector(QMainWindow, Ui_MainWindow):
     def __init__(self):

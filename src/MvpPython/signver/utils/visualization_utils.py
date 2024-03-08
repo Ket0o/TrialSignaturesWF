@@ -8,7 +8,7 @@ from six import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
 
-from signver.utils import data_utils
+from src.MvpPython.signver.utils import data_utils
 
 
 def make_square(image_np_array, min_size=100, fill_color=(255, 255, 255, 0)):
@@ -41,7 +41,7 @@ def plot_np_array(np_img_array, title: str="Image Plot", fig_size=(15, 20), nrow
         plt.imshow(np_img_array, interpolation='nearest')
         plt.title(title)
 
-    plt.show()
+    return plt
 
 
 def get_image_crops(image_np_array, bounding_boxes, scores,  threshold=0.5):
