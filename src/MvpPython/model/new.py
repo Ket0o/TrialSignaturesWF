@@ -54,7 +54,7 @@ class Localization_Predictions:
     def get_len_signatures(self):
         """
         Возвращает длину списка подписей
-        :return:
+        :return: Type: int
         """
         self.create_list_signatures()
         return len(self.signatures)
@@ -63,7 +63,7 @@ class Localization_Predictions:
         """
         Возвращает подпись из списка
         :param index: Индекс подписи
-        :return: Подпись по индексу списка
+        :return: Подпись по индексу списка. Type: numpy.ndarray
         """
         self.create_list_signatures()
         return self.signatures[index]
