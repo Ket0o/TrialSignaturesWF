@@ -37,6 +37,5 @@ class Handler(QObject):
     def find_signatures(self, file_path):
         image_np = data_utils.img_to_np_array(file_path)
         prediction = Localization_Predictions()
-        pixmap_item = QGraphicsPixmapItem(prediction.get_localization_predict())
         self.view.processedImageScene.clear()
-        self.view.processedImageScene.addItem(pixmap_item)
+        self.view.processedImageScene.addItem(prediction.get_localization_predict())
