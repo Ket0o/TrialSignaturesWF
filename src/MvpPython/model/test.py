@@ -14,9 +14,8 @@ from SignaturesFinder import Localization_Predictions
 
 file_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/view/test.png'
 
-image_np = data_utils.img_to_np_array(file_path)
-P = Localization_Predictions()
-# plot_np_array(P.get_localization_predict(),title="Document and Extracted Signatures").show()
-# plot_np_array(P.get_signature(2)).show()
+P = Localization_Predictions(file_path)
+plot_np_array(P.get_localization_predict(),title="Document and Extracted Signatures").show()
+plot_np_array(P.get_signature(2)).show()
 print(type(P.get_localization_predict()))
 print(P.invert_image().__doc__)

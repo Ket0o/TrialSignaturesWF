@@ -1,14 +1,6 @@
-import matplotlib
 import matplotlib.pyplot as plt
-
-import io
-import scipy.misc
 import numpy as np
-from six import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-
-
-from signver.utils import data_utils
 
 
 def make_square(image_np_array, min_size=100, fill_color=(255, 255, 255, 0)):

@@ -1,9 +1,7 @@
-import os.path
-
+from PIL import Image
 from PySide6.QtCore import QObject
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QStandardItemModel, QStandardItem
 from PySide6.QtWidgets import QFileDialog, QGraphicsPixmapItem
-from signver.utils import data_utils
 from model.SignaturesFinder import Localization_Predictions
 
 
@@ -11,9 +9,14 @@ class Handler(QObject):
     def __init__(self, view):
         super().__init__()
         self.view = view
-        self.file_path = ""
+        self.file_path = None
+        self.prediction = None
+        self.model = QStandardItemModel()
+
         self.view.chooseImageButton.clicked.connect(self.select_image)
-        self.view.findSignaturesButton.clicked.connect(self.find_signatures)
+        self.view.findSignaturesButton.clicked.connect(self.load_new_image)
+
+        self.view.signaturesList.clicked.connect(self.find_signatures)
         self.view.originalImageView.setScene(self.view.originalImageScene)
         self.view.processedImageView.setScene(self.view.processedImageScene)
 
@@ -23,19 +26,30 @@ class Handler(QObject):
         )
         if file_path:
             self.file_path = file_path
-            self.load_image(file_path)
+            self.load_image()
 
-    def load_image(self, file_path):
-        pixmap = QPixmap(file_path)
+    def load_image(self):
+        pixmap = QPixmap(self.file_path)
         pixmap_item = QGraphicsPixmapItem(pixmap)
         self.view.originalImageScene.clear()
         self.view.originalImageScene.addItem(pixmap_item)
 
     def load_new_image(self):
-        self.find_signatures(os.path.abspath(self.file_path))
+        self.prediction = Localization_Predictions(self.file_path)
+        self.prediction.create_list_signatures()
+        self.signatures_list()
 
-    def find_signatures(self, file_path):
-        image_np = data_utils.img_to_np_array(file_path)
-        prediction = Localization_Predictions()
+    def find_signatures(self):
         self.view.processedImageScene.clear()
-        self.view.processedImageScene.addItem(prediction.get_localization_predict())
+        Image.fromarray(self.prediction.signatures[self.view.signaturesList.currentIndex().row()]).save('output.png')
+        pixmap_item = QGraphicsPixmapItem(QPixmap('output.png'))
+        self.view.processedImageScene.addItem(pixmap_item)
+
+    def signatures_list(self):
+        count = 1
+        for signature in self.prediction.signatures:
+            item = QStandardItem(f"{count}. Signature")
+            self.model.appendRow(item)
+            count += 1
+        self.view.signaturesList.setModel(self.model)
+
