@@ -1,3 +1,4 @@
+
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 import view.View
