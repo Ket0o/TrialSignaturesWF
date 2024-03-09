@@ -2,8 +2,6 @@ import tensorflow as tf
 import logging
 import urllib.request
 import os
-
-import io
 import numpy as np
 from six import BytesIO
 from PIL import Image
