@@ -1,10 +1,11 @@
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene
-from src.MvpPython.view.MainWindow import Ui_MainWindow
+from view.MainWindow import Ui_MainWindow
 
 class SignaturesDetector(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.scene = QGraphicsScene()
-        self.originalImageView.setScene(self.scene)
-
+        self.originalImageScene = QGraphicsScene()
+        self.processedImageScene = QGraphicsScene()
+        self.originalImageView.setScene(self.originalImageScene)
+        self.processedImageView.setScene(self.processedImageScene)

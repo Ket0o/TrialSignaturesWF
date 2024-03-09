@@ -1,4 +1,4 @@
-from src.MvpPython.signver.extractor import BaseExtractor
+from signver.extractor import BaseExtractor
 
 
 class MetricExtractor(BaseExtractor):
