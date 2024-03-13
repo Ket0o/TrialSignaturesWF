@@ -1,7 +1,16 @@
-from signver.detector import Detector
-from signver.utils import data_utils
-from signver.utils.visualization_utils import visualize_boxes, get_image_crops
+from src.MvpPython.signver.detector import Detector
+from src.MvpPython.signver.cleaner import Cleaner
+from src.MvpPython.signver.extractor import MetricExtractor
+from src.MvpPython.signver.matcher import Matcher
+from src.MvpPython.signver.utils import data_utils, visualization_utils
+from src.MvpPython.signver.utils.data_utils import invert_img, resnet_preprocess
+from src.MvpPython.signver.utils.visualization_utils import plot_np_array, visualize_boxes, get_image_crops, make_square
+
+import numpy as np
 import tensorflow as tf
+import matplotlib
+import matplotlib.pyplot as plt
+
 
 class Localization_Predictions:
     def __init__(self, file_path):
@@ -9,12 +18,22 @@ class Localization_Predictions:
         self.signatures = None
         self.file_path = file_path
 
-        #TODO: переделать абсолютный путь на относительный
+        # TODO: переделать абсолютный путь на относительный
         # (возможно сделать перменные, которые будут сами на машине находить начало пути)
-        self.detector_model_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/detector/small'
+        self.cleaner_model_path = '/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/cleaner/small'
+        self.cleaner = Cleaner()
+        self.cleaner.load(self.cleaner_model_path)
+
+        self.detector_model_path = '/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/detector/small'
         self.detector = Detector()
         self.detector.load(self.detector_model_path)
+
+        extractor_model_path = "/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/extractor/metric"
+        self.extractor = MetricExtractor()
+        self.extractor.load(extractor_model_path)
+
         self.threshold = 0.22
+        self.matcher = Matcher()
 
     def invert_image(self):
         """
@@ -26,7 +45,6 @@ class Localization_Predictions:
         self.img_tensor = tf.convert_to_tensor(self.inverted_image_np)
         self.img_tensor = self.img_tensor[tf.newaxis, ...]
 
-
     def get_localization_predict(self):
         """
         Предсказывает нахождение подписей на изображении
@@ -34,7 +52,8 @@ class Localization_Predictions:
         """
         self.invert_image()
         self.boxes, self.scores, self.classes, self.detections = self.detector.detect(self.img_tensor)
-        self.annotated_image = visualize_boxes(self.image_np, self.boxes, self.scores, threshold=self.threshold, color="green")
+        self.annotated_image = visualize_boxes(self.image_np, self.boxes, self.scores, threshold=self.threshold,
+                                               color="green")
         return self.annotated_image
 
     def create_list_signatures(self):
@@ -53,7 +72,7 @@ class Localization_Predictions:
         self.create_list_signatures()
         return len(self.signatures)
 
-    def get_signature(self,index):
+    def get_signature(self, index):
         """
         Возвращает подпись из списка
         :param index: Индекс подписи
@@ -61,3 +80,30 @@ class Localization_Predictions:
         """
         self.create_list_signatures()
         return self.signatures[index]
+
+    def get_feats_from_signature(self,sign1,sign2):
+        """
+        Получение feature из подписей
+        :param sign1: Первая подпись. Type: numpy.ndarray
+        :param sign2: Вторая подпись. Type: numpy.ndarray
+        :return: Type: numpy.ndarray
+        """
+        signatures = [sign1,sign2]
+        sigs = [resnet_preprocess(x, resnet=False, invert_input=False) for x in signatures]
+        norm_sigs = [x * (1. / 255) for x in sigs]
+        cleaned_sigs = self.cleaner.clean(np.array(norm_sigs))
+        cleaned_feats = self.extractor.extract(cleaned_sigs)
+        c_feat1, c_feat2= cleaned_feats[0, :], cleaned_feats[1, :]
+        return c_feat1,c_feat2
+
+    def verify_signature(self,sign1,sign2):
+        """
+        Сравнение двух подписей
+        :param sign1: Первая подпись. Type: numpy.ndarray
+        :param sign2: Вторая подпись. Type: numpy.ndarray
+        :return: Является ли первая подпись, второй подписью. Type: Boolean
+        :return: Косинусное расстояние между двумя подписями. Type: float
+        """
+        matcher = Matcher()
+        c_feat1, c_feat2 = self.get_feats_from_signature(sign1,sign2)
+        return matcher.verify(c_feat1,c_feat2), matcher.cosine_distance(c_feat1,c_feat2)
