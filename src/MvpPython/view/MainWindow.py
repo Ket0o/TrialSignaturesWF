@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.2
+## Created by: Qt User Interface Compiler version 6.5.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,21 +16,21 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGraphicsView, QLabel, QListView,
-    QMainWindow, QPushButton, QSizePolicy, QVBoxLayout,
-    QWidget)
+    QMainWindow, QPushButton, QSizePolicy, QTextBrowser,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 691)
+        MainWindow.resize(1331, 830)
         MainWindow.setStyleSheet(u"background-color: white;\n"
 "font-family: Times New Roman;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.layoutWidget = QWidget(self.centralwidget)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(180, 10, 611, 671))
+        self.layoutWidget.setGeometry(QRect(180, 10, 481, 671))
         self.verticalLayout_2 = QVBoxLayout(self.layoutWidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -76,6 +76,57 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.signaturesList)
 
+        self.layoutWidget_2 = QWidget(self.centralwidget)
+        self.layoutWidget_2.setObjectName(u"layoutWidget_2")
+        self.layoutWidget_2.setGeometry(QRect(670, 10, 481, 671))
+        self.verticalLayout_4 = QVBoxLayout(self.layoutWidget_2)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.secondOriginalImageView = QGraphicsView(self.layoutWidget_2)
+        self.secondOriginalImageView.setObjectName(u"secondOriginalImageView")
+
+        self.verticalLayout_4.addWidget(self.secondOriginalImageView)
+
+        self.secondProcessedImageView = QGraphicsView(self.layoutWidget_2)
+        self.secondProcessedImageView.setObjectName(u"secondProcessedImageView")
+
+        self.verticalLayout_4.addWidget(self.secondProcessedImageView)
+
+        self.layoutWidget_3 = QWidget(self.centralwidget)
+        self.layoutWidget_3.setObjectName(u"layoutWidget_3")
+        self.layoutWidget_3.setGeometry(QRect(1160, 10, 161, 671))
+        self.verticalLayout_5 = QVBoxLayout(self.layoutWidget_3)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.secondChoseImageLabel = QLabel(self.layoutWidget_3)
+        self.secondChoseImageLabel.setObjectName(u"secondChoseImageLabel")
+        self.secondChoseImageLabel.setTextFormat(Qt.AutoText)
+
+        self.verticalLayout_6.addWidget(self.secondChoseImageLabel)
+
+        self.secondChooseImageButton = QPushButton(self.layoutWidget_3)
+        self.secondChooseImageButton.setObjectName(u"secondChooseImageButton")
+
+        self.verticalLayout_6.addWidget(self.secondChooseImageButton)
+
+        self.compareSignaturesButton = QPushButton(self.layoutWidget_3)
+        self.compareSignaturesButton.setObjectName(u"compareSignaturesButton")
+
+        self.verticalLayout_6.addWidget(self.compareSignaturesButton)
+
+
+        self.verticalLayout_5.addLayout(self.verticalLayout_6)
+
+        self.secondSignaturesList = QListView(self.layoutWidget_3)
+        self.secondSignaturesList.setObjectName(u"secondSignaturesList")
+
+        self.verticalLayout_5.addWidget(self.secondSignaturesList)
+
+        self.resultTextBrowser = QTextBrowser(self.centralwidget)
+        self.resultTextBrowser.setObjectName(u"resultTextBrowser")
+        self.resultTextBrowser.setGeometry(QRect(10, 690, 1311, 131))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -88,5 +139,8 @@ class Ui_MainWindow(object):
         self.choseImageLabel.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435:", None))
         self.chooseImageButton.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c", None))
         self.findSignaturesButton.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0439\u0442\u0438 \u043f\u043e\u0434\u043f\u0438\u0441\u0438", None))
+        self.secondChoseImageLabel.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435:", None))
+        self.secondChooseImageButton.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c", None))
+        self.compareSignaturesButton.setText(QCoreApplication.translate("MainWindow", u"\u0421\u0440\u0430\u0432\u043d\u0438\u0442\u044c \u043f\u043e\u0434\u043f\u0438\u0441\u0438", None))
     # retranslateUi
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>691</height>
+    <width>1331</width>
+    <height>830</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@ font-family: Times New Roman;</string>
      <rect>
       <x>180</x>
       <y>10</y>
-      <width>611</width>
+      <width>481</width>
       <height>671</height>
      </rect>
     </property>
@@ -78,6 +78,77 @@ font-family: Times New Roman;</string>
       <widget class="QListView" name="signaturesList"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>10</y>
+      <width>481</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QGraphicsView" name="secondOriginalImageView"/>
+     </item>
+     <item>
+      <widget class="QGraphicsView" name="secondProcessedImageView"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>1160</x>
+      <y>10</y>
+      <width>161</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="secondChoseImageLabel">
+         <property name="text">
+          <string>Выберите изображение:</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="secondChooseImageButton">
+         <property name="text">
+          <string>Выбрать</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="compareSignaturesButton">
+         <property name="text">
+          <string>Сравнить подписи</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QListView" name="secondSignaturesList"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextBrowser" name="resultTextBrowser">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>690</y>
+      <width>1311</width>
+      <height>131</height>
+     </rect>
+    </property>
    </widget>
   </widget>
  </widget>
