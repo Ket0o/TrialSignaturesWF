@@ -9,47 +9,125 @@ class Handler(QObject):
     def __init__(self, view):
         super().__init__()
         self.view = view
-        self.file_path = None
         self.prediction = None
-        self.model = QStandardItemModel()
+        self.first_file_path = None
+        self.second_file_path = None
+        self.first_signatures = None
+        self.second_signatures = None
+        self.first_model = QStandardItemModel()
+        self.second_model = QStandardItemModel()
 
-        self.view.chooseImageButton.clicked.connect(self.select_image)
-        self.view.findSignaturesButton.clicked.connect(self.load_new_image)
+        self.view.chooseImageButton.clicked.connect(lambda: self.select_image(self.view.originalImageScene,
+                                                                              self.view.chooseImageButton))
+        self.view.secondChooseImageButton.clicked.connect(lambda: self.select_image(self.view.secondOriginalImageScene,
+                                                                                    self.view.secondChooseImageButton))
 
-        self.view.signaturesList.clicked.connect(self.find_signatures)
+
+        self.view.findSignaturesButton.clicked.connect(lambda: self.show_image(
+            self.view.signaturesList, self.first_file_path,
+            self.view.secondSignaturesList, self.second_file_path
+        ))
+        self.view.compareSignaturesButton.clicked.connect(lambda: self.compare_signatures(
+            self.view.signaturesList,
+            self.view.secondSignaturesList,
+            self.view.resultTextBrowser
+        ))
+
+        self.view.signaturesList.clicked.connect(lambda: self.find_signatures(self.view.processedImageScene,
+                                                                              self.view.signaturesList,
+                                                                              self.first_signatures))
+        self.view.secondSignaturesList.clicked.connect(lambda: self.find_signatures(self.view.secondProcessedImageScene,
+                                                                                    self.view.secondSignaturesList,
+                                                                                    self.second_signatures))
+
         self.view.originalImageView.setScene(self.view.originalImageScene)
-        self.view.processedImageView.setScene(self.view.processedImageScene)
+        self.view.secondOriginalImageView.setScene(self.view.secondOriginalImageScene)
 
-    def select_image(self):
+        self.view.processedImageView.setScene(self.view.processedImageScene)
+        self.view.secondProcessedImageView.setScene(self.view.secondProcessedImageScene)
+
+    def select_image(self, scene, button):
+        scene.clear()
         file_path, _ = QFileDialog.getOpenFileName(
             self.view, "Select Image", "", "Images (*.png *.jpg *.jpeg)"
         )
         if file_path:
-            self.file_path = file_path
-            self.load_image()
+            if (button.objectName() == "chooseImageButton"):
+                self.first_file_path = file_path
+                self.clear_components(
+                    {self.first_model},
+                    {self.view.originalImageScene, self.view.processedImageScene},
+                    {self.view.resultTextBrowser})
 
-    def load_image(self):
-        pixmap = QPixmap(self.file_path)
+            else:
+                self.second_file_path = file_path
+                self.clear_components(
+                    {self.second_model},
+                    {self.view.secondOriginalImageScene, self.view.secondProcessedImageScene},
+                    {self.view.resultTextBrowser})
+            self.preparation_image(scene, file_path)
+
+    def preparation_image(self, scene, file_path):
+        pixmap = QPixmap(file_path)
         pixmap_item = QGraphicsPixmapItem(pixmap)
-        self.view.originalImageScene.clear()
-        self.view.originalImageScene.addItem(pixmap_item)
+        self.clear_components(None, {scene}, None)
+        scene.addItem(pixmap_item)
 
-    def load_new_image(self):
-        self.prediction = Localization_Predictions(self.file_path)
+    def show_image(self, firstSignaturesList, first_file_path, secondSignaturesList, second_file_path):
+        self.clear_components(
+            {self.first_model, self.second_model},
+            {self.view.processedImageScene, self.view.secondProcessedImageScene},
+            {self.view.resultTextBrowser})
+        self.load_new_image(firstSignaturesList, first_file_path)
+        self.load_new_image(secondSignaturesList, second_file_path)
+
+    def load_new_image(self, signaturesList, file_path):
+        self.prediction = Localization_Predictions(file_path)
         self.prediction.create_list_signatures()
-        self.signatures_list()
+        if (signaturesList.objectName() == "signaturesList"):
+            self.first_signatures = self.prediction.signatures
+        else:
+            self.second_signatures = self.prediction.signatures
+        self.signatures_list(self.prediction.signatures, signaturesList)
 
-    def find_signatures(self):
-        self.view.processedImageScene.clear()
-        Image.fromarray(self.prediction.signatures[self.view.signaturesList.currentIndex().row()]).save('output.png')
-        pixmap_item = QGraphicsPixmapItem(QPixmap('output.png'))
-        self.view.processedImageScene.addItem(pixmap_item)
+    def find_signatures(self, scene, signaturesList, signatures):
+        self.clear_components(None, {scene}, None)
+        if (signaturesList.objectName() == "signaturesList"):
+            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('firstOutput.png')
+            first_pixmap_item = QGraphicsPixmapItem(QPixmap('firstOutput.png'))
+        else:
+            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('secondtOutput.png')
+            first_pixmap_item = QGraphicsPixmapItem(QPixmap('secondtOutput.png'))
 
-    def signatures_list(self):
+        scene.addItem(first_pixmap_item)
+
+    def signatures_list(self, signatures, signaturesList):
         count = 1
-        for signature in self.prediction.signatures:
+        model = QStandardItemModel()
+        for signature in signatures:
             item = QStandardItem(f"{count}. Signature")
-            self.model.appendRow(item)
+            model.appendRow(item)
             count += 1
-        self.view.signaturesList.setModel(self.model)
+        if (signaturesList.objectName() == "signaturesList"):
+            self.first_model = model
+        else:
+            self.second_model = model
+        signaturesList.setModel(model)
 
+    def compare_signatures(self, firstSignaturesList, secondSignaturesList, resultTextBrowser):
+        self.clear_components(None, None, {resultTextBrowser})
+        first_signature = self.first_signatures[firstSignaturesList.currentIndex().row()]
+        second_signature = self.second_signatures[secondSignaturesList.currentIndex().row()]
+        result = self.prediction.verify_signature(first_signature, second_signature)
+        resultTextBrowser.append(str(result))
+
+    def clear_components(self, models, scenes, textBrowsers):
+        if models is not None:
+            for model in models:
+                model.clear()
+        if scenes is not None:
+            for scene in scenes:
+                scene.clear()
+        if textBrowsers is not None:
+            for textBrowser in textBrowsers:
+                textBrowser.clear()
