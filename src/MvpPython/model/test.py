@@ -23,6 +23,6 @@ sign2 = P.get_signature(1)
 sign3 = P.get_signature(0)
 
 
-print(P.verify_signature(sign1,sign2))
-print(P.verify_signature(sign1,sign1))
+print(P.verify_signature(sign1, sign2))
+print(P.verify_signature(sign1, sign1))
 

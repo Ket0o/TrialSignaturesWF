@@ -1,10 +1,10 @@
-from src.MvpPython.signver.detector import Detector
-from src.MvpPython.signver.cleaner import Cleaner
-from src.MvpPython.signver.extractor import MetricExtractor
-from src.MvpPython.signver.matcher import Matcher
-from src.MvpPython.signver.utils import data_utils, visualization_utils
-from src.MvpPython.signver.utils.data_utils import invert_img, resnet_preprocess
-from src.MvpPython.signver.utils.visualization_utils import plot_np_array, visualize_boxes, get_image_crops, make_square
+from signver.detector import Detector
+from signver.cleaner import Cleaner
+from signver.extractor import MetricExtractor
+from signver.matcher import Matcher
+from signver.utils import data_utils, visualization_utils
+from signver.utils.data_utils import invert_img, resnet_preprocess
+from signver.utils.visualization_utils import plot_np_array, visualize_boxes, get_image_crops, make_square
 
 import numpy as np
 import tensorflow as tf
@@ -20,15 +20,15 @@ class Localization_Predictions:
 
         # TODO: переделать абсолютный путь на относительный
         # (возможно сделать перменные, которые будут сами на машине находить начало пути)
-        self.cleaner_model_path = '/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/cleaner/small'
+        self.cleaner_model_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/cleaner/small'
         self.cleaner = Cleaner()
         self.cleaner.load(self.cleaner_model_path)
 
-        self.detector_model_path = '/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/detector/small'
+        self.detector_model_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/detector/small'
         self.detector = Detector()
         self.detector.load(self.detector_model_path)
 
-        extractor_model_path = "/home/danil/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/extractor/metric"
+        extractor_model_path = "C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/extractor/metric"
         self.extractor = MetricExtractor()
         self.extractor.load(extractor_model_path)
 
@@ -96,7 +96,7 @@ class Localization_Predictions:
         c_feat1, c_feat2= cleaned_feats[0, :], cleaned_feats[1, :]
         return c_feat1,c_feat2
 
-    def verify_signature(self,sign1,sign2):
+    def verify_signature(self, sign1, sign2):
         """
         Сравнение двух подписей
         :param sign1: Первая подпись. Type: numpy.ndarray

@@ -6,6 +6,11 @@ class SignaturesDetector(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.originalImageScene = QGraphicsScene()
+        self.secondOriginalImageScene = QGraphicsScene()
         self.processedImageScene = QGraphicsScene()
+        self.secondProcessedImageScene = QGraphicsScene()
         self.originalImageView.setScene(self.originalImageScene)
+        self.secondOriginalImageView.setScene(self.secondOriginalImageScene)
         self.processedImageView.setScene(self.processedImageScene)
+        self.secondProcessedImageView.setScene(self.secondProcessedImageScene)
+
