@@ -2,7 +2,9 @@ from PIL import Image
 from PySide6.QtCore import QObject
 from PySide6.QtGui import QPixmap, QStandardItemModel, QStandardItem
 from PySide6.QtWidgets import QFileDialog, QGraphicsPixmapItem
-from model.SignaturesFinder import Localization_Predictions
+
+from model.Implementation.PdfToImageConverter import PdfToImageConverter
+from model.Implementation.SignaturesFinder import Localization_Predictions
 
 
 class Handler(QObject):
@@ -49,18 +51,29 @@ class Handler(QObject):
     def select_image(self, scene, button):
         scene.clear()
         file_path, _ = QFileDialog.getOpenFileName(
-            self.view, "Select Image", "", "Images (*.png *.jpg *.jpeg)"
+            self.view, "Select Image", "", "Images (*.png *.jpg *.jpeg *.pdf)"
         )
         if file_path:
             if (button.objectName() == "chooseImageButton"):
-                self.first_file_path = file_path
+                self.first_file_path \
+                    = PdfToImageConverter.convert_data(
+                    file_path=file_path,
+                    file_name="first_image",
+                    output_folder='images') \
+                    if file_path.split('.')[-1] == 'pdf' \
+                    else file_path
                 self.clear_components(
                     {self.first_model},
                     {self.view.originalImageScene, self.view.processedImageScene},
                     {self.view.resultTextBrowser})
-
             else:
-                self.second_file_path = file_path
+                self.second_file_path \
+                    = PdfToImageConverter.convert_data(
+                    file_path=file_path,
+                    file_name="second_image",
+                    output_folder='images') \
+                    if file_path.split('.')[-1] == 'pdf' \
+                    else file_path
                 self.clear_components(
                     {self.second_model},
                     {self.view.secondOriginalImageScene, self.view.secondProcessedImageScene},
@@ -93,11 +106,11 @@ class Handler(QObject):
     def find_signatures(self, scene, signaturesList, signatures):
         self.clear_components(None, {scene}, None)
         if (signaturesList.objectName() == "signaturesList"):
-            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('firstOutput.png')
-            first_pixmap_item = QGraphicsPixmapItem(QPixmap('firstOutput.png'))
+            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('images/firstOutput.png')
+            first_pixmap_item = QGraphicsPixmapItem(QPixmap('images/firstOutput.png'))
         else:
-            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('secondtOutput.png')
-            first_pixmap_item = QGraphicsPixmapItem(QPixmap('secondtOutput.png'))
+            Image.fromarray(signatures[signaturesList.currentIndex().row()]).save('images/secondOutput.png')
+            first_pixmap_item = QGraphicsPixmapItem(QPixmap('images/secondOutput.png'))
 
         scene.addItem(first_pixmap_item)
 

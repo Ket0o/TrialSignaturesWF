@@ -1,4 +1,6 @@
+import os
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene
+from model.Implementation.Cleaner import Cleaner
 from view.MainWindow import Ui_MainWindow
 
 class SignaturesDetector(QMainWindow, Ui_MainWindow):
@@ -14,3 +16,6 @@ class SignaturesDetector(QMainWindow, Ui_MainWindow):
         self.processedImageView.setScene(self.processedImageScene)
         self.secondProcessedImageView.setScene(self.secondProcessedImageScene)
 
+    def closeEvent(self, event):
+        Cleaner.clean_all_image(os.path.join(os.path.dirname(__file__), '..', 'images'))
+        event.accept()

@@ -8,27 +8,25 @@ from signver.utils.visualization_utils import plot_np_array, visualize_boxes, ge
 
 import numpy as np
 import tensorflow as tf
-import matplotlib
-import matplotlib.pyplot as plt
-
+import os
 
 class Localization_Predictions:
+
     def __init__(self, file_path):
         super().__init__()
         self.signatures = None
         self.file_path = file_path
+        current_directory = os.path.dirname(__file__)
 
-        # TODO: переделать абсолютный путь на относительный
-        # (возможно сделать перменные, которые будут сами на машине находить начало пути)
-        self.cleaner_model_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/cleaner/small'
+        self.cleaner_model_path = os.path.join(current_directory, '..', '..', 'models', 'cleaner', 'small')
         self.cleaner = Cleaner()
         self.cleaner.load(self.cleaner_model_path)
 
-        self.detector_model_path = 'C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/detector/small'
+        self.detector_model_path = os.path.join(current_directory, '..', '..', 'models', 'detector', 'small')
         self.detector = Detector()
         self.detector.load(self.detector_model_path)
 
-        extractor_model_path = "C:/Users/Кирилл/PycharmProjects/TrialSignaturesWF/src/MvpPython/models/extractor/metric"
+        extractor_model_path = os.path.join(current_directory, '..', '..', 'models', 'extractor', 'metric')
         self.extractor = MetricExtractor()
         self.extractor.load(extractor_model_path)
 
