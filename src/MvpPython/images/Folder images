@@ -1,0 +1,2 @@
+The images folder is needed to store temporary images when the application is running.
+It won't work without it.
