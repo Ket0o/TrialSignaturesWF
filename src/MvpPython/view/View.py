@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QMainWindow, QGraphicsScene
 from model.Implementation.Cleaner import Cleaner
 from view.MainWindow import Ui_MainWindow
 
+
 class SignaturesDetector(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()

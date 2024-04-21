@@ -12,7 +12,7 @@ import os
 
 class Localization_Predictions:
 
-    def __init__(self, file_path):
+    def __init__(self, file_path=None):
         super().__init__()
         self.signatures = None
         self.__file_path = file_path
@@ -33,11 +33,13 @@ class Localization_Predictions:
         self.__threshold = 0.22
         self.matcher = Matcher()
 
-    def __invert_image(self):
+    def __invert_image(self, file_path=None):
         """
         Инвертирует изображение.
         :return:
         """
+        if (file_path is not None):
+            self.__file_path = file_path
         self.image_np = data_utils.img_to_np_array(self.__file_path)
         self.inverted_image_np = data_utils.img_to_np_array(self.__file_path, invert_image=True)
         self.img_tensor = tf.convert_to_tensor(self.inverted_image_np)

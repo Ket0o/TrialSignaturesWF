@@ -24,6 +24,7 @@ def resize_img(image_np, img_size=(224, 224)):
 
 
 def resnet_preprocess(image_np, resize_input=True, threshold_input=True, invert_input=False, resnet=True):
+    # image_np = image_np.astype(np.uint8)
     if invert_input:
         image_np = invert_img(image_np)
     if resize_input:

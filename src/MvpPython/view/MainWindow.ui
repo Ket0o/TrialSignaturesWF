@@ -136,6 +136,13 @@ font-family: Times New Roman;</string>
       </layout>
      </item>
      <item>
+      <widget class="QPushButton" name="compareSignaturesPlaneButton">
+       <property name="text">
+        <string>Сравнить подписи</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QListView" name="secondSignaturesList"/>
      </item>
     </layout>
