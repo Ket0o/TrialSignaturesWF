@@ -4,6 +4,7 @@ from PySide6.QtGui import QPixmap, QStandardItemModel, QStandardItem
 from PySide6.QtWidgets import QFileDialog, QGraphicsPixmapItem
 
 from model.Implementation.PdfToImageConverter import PdfToImageConverter
+from model.Implementation.SignatureAuthenticate import Signature_Authenticate
 from model.Implementation.SignaturesFinder import Localization_Predictions
 
 
@@ -12,6 +13,7 @@ class Handler(QObject):
         super().__init__()
         self.view = view
         self.prediction = None
+        self.signature_authenticate = None
         self.first_file_path = None
         self.second_file_path = None
         self.first_signatures = None
@@ -23,6 +25,9 @@ class Handler(QObject):
                                                                               self.view.chooseImageButton))
         self.view.secondChooseImageButton.clicked.connect(lambda: self.select_image(self.view.secondOriginalImageScene,
                                                                                     self.view.secondChooseImageButton))
+
+        self.view.compareSignaturesPlaneButton.clicked.connect(lambda: self.compare_signatures(self.first_file_path,
+                                                                                               self.second_file_path))
 
 
         self.view.findSignaturesButton.clicked.connect(lambda: self.show_image(
@@ -85,6 +90,14 @@ class Handler(QObject):
         pixmap_item = QGraphicsPixmapItem(pixmap)
         self.clear_components(None, {scene}, None)
         scene.addItem(pixmap_item)
+
+    def compare_signatures(self, first_file_path, second_file_path):
+        self.clear_components(None,
+                              {self.view.processedImageScene, self.view.secondProcessedImageScene},
+                              {self.view.resultTextBrowser})
+        self.signature_authenticate = Signature_Authenticate()
+        self.view.resultTextBrowser.append(self.signature_authenticate.authenticate_signature(first_file_path,
+                                                                                              second_file_path))
 
     def show_image(self, firstSignaturesList, first_file_path, secondSignaturesList, second_file_path):
         self.clear_components(

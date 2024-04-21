@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'MainWindow.ui'
+##
+## Created by: Qt User Interface Compiler version 6.5.3
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
@@ -14,6 +24,8 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1331, 830)
+        MainWindow.setMinimumSize(QSize(1331, 830))
+        MainWindow.setMaximumSize(QSize(1331, 830))
         MainWindow.setStyleSheet(u"background-color: white;\n"
 "font-family: Times New Roman;")
         self.centralwidget = QWidget(MainWindow)
@@ -137,5 +149,6 @@ class Ui_MainWindow(object):
         self.secondChoseImageLabel.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435:", None))
         self.secondChooseImageButton.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0440\u0430\u0442\u044c", None))
         self.compareSignaturesButton.setText(QCoreApplication.translate("MainWindow", u"\u0421\u0440\u0430\u0432\u043d\u0438\u0442\u044c \u043f\u043e\u0434\u043f\u0438\u0441\u0438", None))
-        self.compareSignaturesPlaneButton.setText(QCoreApplication.translate("MainWindow", u"\u0421\u0440\u0430\u0432\u043d\u0438\u0442\u044c \u043f\u043e\u0434\u043f\u0438\u0441\u0438", None))
+        self.compareSignaturesPlaneButton.setText(QCoreApplication.translate("MainWindow", u"\u0421\u0440\u0430\u0432\u043d\u0438\u0442\u044c \u043f\u043e\u0434\u043f\u0438\u0441\u0438 \u0441 \u043f\u043b\u0430\u043d\u0448\u0435\u0442\u0430", None))
     # retranslateUi
+
